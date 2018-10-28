@@ -65,7 +65,7 @@
       </AnchorPane>
       <StackPane fx:id="KingWay" layoutX="300.0" layoutY="70.0" prefHeight="700.0" prefWidth="700.0">
          <children>
-            <Text fx:id="BigText" strokeType="OUTSIDE" strokeWidth="0.0" style="visibility: no;" text="Слишком большое число, не отрисовывается" textAlignment="CENTER" wrappingWidth="479.08740234375">
+            <Text fx:id="BigText" strokeType="OUTSIDE" strokeWidth="0.0" style="visibility: no;" text="Слишком большое число не отрисовывается" textAlignment="CENTER" wrappingWidth="479.08740234375">
                <font>
                   <Font size="48.0" />
                </font>
@@ -78,9 +78,9 @@
                   <Font size="18.0" />
                </font>
             </Text>
-            <TextArea fx:id="StepWay" editable="false" layoutX="8.0" layoutY="38.0" prefHeight="222.0" prefWidth="287.0" promptText="Шаги короля" scrollTop="1.0" />
+            <TextArea fx:id="StepWay" editable="false" layoutX="8.0" layoutY="38.0" prefHeight="192.0" prefWidth="287.0" promptText="Шаги короля" scrollTop="1.0" />
             <Button fx:id="ResultButton" layoutX="8.0" layoutY="298.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="287.0" text="Расчитать в 8 потоков" />
-            <TextArea fx:id="ResultField" editable="false" layoutX="6.0" layoutY="330.0" prefHeight="331.0" prefWidth="287.0" scrollTop="1.0">
+            <TextArea fx:id="ResultField" editable="false" layoutX="6.0" layoutY="327.0" prefHeight="330.0" prefWidth="287.0" scrollTop="1.0">
                <font>
                   <Font size="10.0" />
                </font>
@@ -92,6 +92,7 @@
                </font>
             </Text>
             <Button fx:id="OnePotok" layoutX="8.0" layoutY="267.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="287.0" text="Расчитать в один поток" />
+            <StackPane fx:id="PR" layoutX="9.0" layoutY="234.0" prefHeight="27.0" prefWidth="287.0" />
          </children>
       </AnchorPane>
    </children>

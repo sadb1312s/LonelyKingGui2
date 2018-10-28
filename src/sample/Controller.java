@@ -10,7 +10,9 @@ import java.util.*;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -62,12 +64,20 @@ public class Controller {
     private Text BigText;
     @FXML
     private Button OnePotok;
+    @FXML
+    private StackPane PR;
 
 
 
     //инициализация графики
     @FXML
     void initialize() {
+
+        progressBar = new ProgressBar();
+        PR.getChildren().add(progressBar);
+        progressBar.progressProperty().unbind();
+        progressBar.setMaxWidth(900);
+
         //кнопки
         Waylist = new ArrayList <Integer>();
         //переменные
@@ -248,6 +258,8 @@ public class Controller {
     }
     //на основе заданных шагов вычисляет координаты каждой точки на которой был король
     private void run(){
+        StopFlag=0;
+        StopFlagDop=0;
         cellSize= (float) (700/((N+0.5)*2));
         n=0;
         allWay="";
@@ -401,6 +413,7 @@ public class Controller {
     }
     //Поиск в 1 поток
     private void FindCellOneThread(){
+        ThreadVariant=1;
         list = new ArrayList <String>();
         ResultString = "";
         count = new int[N + 1];
@@ -409,76 +422,19 @@ public class Controller {
         resultStringTest=null;
 
 
-            //System.out.println("Считаем в один поток");
-            //step 1
-            for (int i = 0; i < N + 1; i++) {
-                int Count = 1;
-                for (int j = 0; j < N + 1; j++) {
-                    if (stepX[i] == stepX[j] && stepY[i] == stepY[j]) {
-                        if (i != j) {
-                            Count++;
-
-                        }
-                    }
-                }
-                count[i] = Count;
-                if (count[i] > 1) {
-                    CountStringTest++;
-                }
-
-                CountString[i] = ("Король был поле c координатами: X=" + stepX[i] + " Y=" + stepY[i] + " " + Count +
-                        " раз(а)" + "\n");
-                //System.out.println(i);
-            }
-
-
-            resultStringTest = new String[CountStringTest];
-
-
-            //System.out.println("----Отсеиваем <2----");
-            int j = 0;
-            for (int i = 0; i < N; i++) {
-                if (count[i] > 1) {
-                    System.out.println(i+" "+" count "+count[i]+resultStringTest[j]+"="+CountString[i]);
-                    resultStringTest[j] = CountString[i];
-
-                    j++;
-                }
-            }
-            //System.out.println("----Отсеиваем-Одинаковые строки----");
-            Set<String> set = new HashSet<String>(Arrays.asList(resultStringTest));
-
-            //System.out.println("HashSet contains: " + set);
-            String[] array = new String[set.size()];
-            set.toArray(array);
-
-            //System.out.println("Array elements: ");
-            for (String temp : array) {
-                if (temp != null) {
-                    ResultString += temp;
-                }
-            }
-
-
-            finish = System.currentTimeMillis();
-            timeConsumedMillis = finish - start;
-
-            if (ResultString.equals("")) {
-                ResultString = "Небыло такого";
-
-
-                ResultField.setText(ResultString);
-
-
-            }
-            TimeField.setText(Long.toString(timeConsumedMillis) + " Милисекунд");
-            ResultField.setText(ResultString);
-            //System.out.println("finish");
-
-
+        //System.out.println("Считаем в один поток");
+        calculateManThread1 = new calculateMan(0, N, 1, N);
+        new Thread(calculateManThread1).start();
+        progressBar.progressProperty().bind(calculateManThread1.progressProperty());
+        calculateManThread1.setOnSucceeded(e -> {
+                setResult();
+        });
     }
     //поиск в 8 потоков
     private void FindCell() throws InterruptedException {
+        ThreadVariant=2;
+        StopFlag=0;
+        StopFlagDop=0;
         list = new ArrayList<String>();
         ResultString = "";
         count = new int[N + 1];
@@ -487,11 +443,15 @@ public class Controller {
         resultStringTest = null;
 
         int N2 = N;//чтобы ровно поделилось
+        if(N% 8 != 0){
+            StopFlagDop++;
+        }
         if (N2 != 0) {
             while (N2 % 8 != 0) {
                 N2--;
             }
         }
+
         //Потоки
         calculateManThread1 = new calculateMan(0, N2, 1, N2 / 8);
         calculateManThread2 = new calculateMan((N2 / 8) + 1, N, 2, (2 * N2) / 8);
@@ -501,8 +461,7 @@ public class Controller {
         calculateManThread6 = new calculateMan(((5 * N2) / 8) + 1, N2, 6, (6 * N2) / 8);
         calculateManThread7 = new calculateMan(((6 * N2) / 8) + 1, N2, 7, (7 * N2) / 8);
         calculateManThread8 = new calculateMan(((7 * N2) / 8) + 1, N2, 8, N2);
-        calculateManThread8 = new calculateMan((N2) + 1, N2, 9, N);
-
+        calculateManThread9 = new calculateMan((N2) + 1, N2, 9, N);
 
         new Thread(calculateManThread1).start();
         new Thread(calculateManThread2).start();
@@ -512,48 +471,70 @@ public class Controller {
         new Thread(calculateManThread6).start();
         new Thread(calculateManThread7).start();
         new Thread(calculateManThread8).start();
-
+        if(StopFlagDop==1) {
+            System.out.println("9 start");
+            new Thread(calculateManThread9).start();
+        }
+        progressBar.progressProperty().bind(calculateManThread1.progressProperty());
+        progressBar.progressProperty().bind(calculateManThread2.progressProperty());
+        progressBar.progressProperty().bind(calculateManThread3.progressProperty());
+        progressBar.progressProperty().bind(calculateManThread4.progressProperty());
+        progressBar.progressProperty().bind(calculateManThread5.progressProperty());
+        progressBar.progressProperty().bind(calculateManThread6.progressProperty());
+        progressBar.progressProperty().bind(calculateManThread7.progressProperty());
+        progressBar.progressProperty().bind(calculateManThread8.progressProperty());
+        if(StopFlagDop==1) {
+            System.out.println("9 start");
+            progressBar.progressProperty().bind(calculateManThread9.progressProperty());
+        }
         calculateManThread1.setOnSucceeded(e -> {
-            if(StopFlag==8){
+            if(StopFlag==8+StopFlagDop){
                 setResult();
             }
         });
         calculateManThread2.setOnSucceeded(e -> {
-            if(StopFlag==8){
+            if(StopFlag==8+StopFlagDop){
                 setResult();
             }
         });
         calculateManThread3.setOnSucceeded(e -> {
-            if(StopFlag==8){
+            if(StopFlag==8+StopFlagDop){
                 setResult();
             }
         });
         calculateManThread4.setOnSucceeded(e -> {
-            if(StopFlag==8){
+            if(StopFlag==8+StopFlagDop){
                 setResult();
             }
         });
         calculateManThread5.setOnSucceeded(e -> {
-            if(StopFlag==8){
+            if(StopFlag==8+StopFlagDop){
                 setResult();
             }
         });
         calculateManThread6.setOnSucceeded(e -> {
-            if(StopFlag==8){
+            if(StopFlag==8+StopFlagDop){
                 setResult();
             }
         });
         calculateManThread7.setOnSucceeded(e -> {
-            if(StopFlag==8){
+            if(StopFlag==8+StopFlagDop){
                 setResult();
             }
         });
         calculateManThread8.setOnSucceeded(e -> {
-            if(StopFlag==8){
+            if(StopFlag==8+StopFlagDop){
                 setResult();
             }
         });
-
+        if(StopFlagDop==1) {
+            calculateManThread9.setOnSucceeded(e -> {
+                System.out.println("9 stop");
+                if (StopFlag == 8 + StopFlagDop) {
+                    setResult();
+                }
+            });
+        }
     }
     private void setResult(){
         resultStringTest = list.toArray(new String[list.size()]);

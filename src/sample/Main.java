@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import java.util.ArrayList;
@@ -34,12 +35,14 @@ public class Main extends Application {
     static calculateMan calculateManThread7;
     static calculateMan calculateManThread8;
     static calculateMan calculateManThread9;
-    static GraphicsThread graphicsthread;
+    static ProgressBar progressBar;
     static String[] resultStringTest;
     static int CountStringTest;
     static String allWay="";
     static int n=0;
-    static int StopFlag;
+    static int StopFlag=0;
+    static int StopFlagDop=0;
+    static int ThreadVariant=0;
 
     static ArrayList <String> list;
     static ArrayList <Integer> Waylist;

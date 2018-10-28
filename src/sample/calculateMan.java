@@ -10,6 +10,8 @@ public class calculateMan extends Task {
     int stop;
     int N;
     int Count;
+    int j=0;
+    int Max;
 
     calculateMan(int start, int N, int number, int stop) {
         //System.out.println("Поток " + number + " Создание");
@@ -23,7 +25,16 @@ public class calculateMan extends Task {
 
     @Override
     public Integer call() {
+
+        if(ThreadVariant==1){
+            Max=N;
+        }
+        if(ThreadVariant==2){
+            Max=N/8;
+        }
+
         for (int i = start; i <=stop; i++) {
+            j++;
             Count=1;
             for (int j = 0; j < N + 1; j++) {
                 if (stepX[i] == stepX[j] && stepY[i] == stepY[j]) {
@@ -39,7 +50,7 @@ public class calculateMan extends Task {
                 list.add("Король был поле c координатами: X=" + stepX[i] + " Y=" + stepY[i] + " " + Count +
                         " раз(а)" + "\n");
             }
-
+            this.updateProgress(j, Max);
             //System.out.println("Поток "+number+" "+i);
         }
         StopFlag++;
