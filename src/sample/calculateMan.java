@@ -1,8 +1,10 @@
 package sample;
 
+import javafx.concurrent.Task;
+
 import static sample.Main.*;
 
-public class calculateMan extends Thread {
+public class calculateMan extends Task {
     int number;
     int start;
     int stop;
@@ -20,7 +22,7 @@ public class calculateMan extends Thread {
     }
 
     @Override
-    public void run() {
+    public Integer call() {
         for (int i = start; i <=stop; i++) {
             Count=1;
             for (int j = 0; j < N + 1; j++) {
@@ -40,6 +42,8 @@ public class calculateMan extends Thread {
 
             //System.out.println("Поток "+number+" "+i);
         }
+        StopFlag++;
         //System.out.println("Поток "+number+"  стоп");
+        return 1;
     }
 }

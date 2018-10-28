@@ -34,10 +34,12 @@ public class Main extends Application {
     static calculateMan calculateManThread7;
     static calculateMan calculateManThread8;
     static calculateMan calculateManThread9;
+    static GraphicsThread graphicsthread;
     static String[] resultStringTest;
     static int CountStringTest;
     static String allWay="";
     static int n=0;
+    static int StopFlag;
 
     static ArrayList <String> list;
     static ArrayList <Integer> Waylist;

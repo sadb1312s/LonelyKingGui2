@@ -1,5 +1,6 @@
 package sample;
 
+import java.awt.*;
 import java.io.*;
 import java.net.URL;
 import java.nio.file.Files;
@@ -16,11 +17,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Stop;
 import javafx.scene.text.Text;
 
 import static javafx.scene.paint.Color.*;
 import static sample.Main.*;
-
+import javafx.concurrent.Task;
 
 public class Controller {
 
@@ -477,13 +479,12 @@ public class Controller {
     }
     //поиск в 8 потоков
     private void FindCell() throws InterruptedException {
-        list = new ArrayList <String>();
+        list = new ArrayList<String>();
         ResultString = "";
         count = new int[N + 1];
         CountString = new String[N + 1];
-        CountStringTest=0;
-        resultStringTest=null;
-
+        CountStringTest = 0;
+        resultStringTest = null;
 
         int N2 = N;//чтобы ровно поделилось
         if (N2 != 0) {
@@ -502,48 +503,75 @@ public class Controller {
         calculateManThread8 = new calculateMan(((7 * N2) / 8) + 1, N2, 8, N2);
         calculateManThread8 = new calculateMan((N2) + 1, N2, 9, N);
 
-        calculateManThread1.start();
-        calculateManThread2.start();
-        calculateManThread3.start();
-        calculateManThread4.start();
-        calculateManThread5.start();
-        calculateManThread6.start();
-        calculateManThread7.start();
-        calculateManThread8.start();
 
-        if(N2 % 8 != 0) {
-            calculateManThread9.start();
-        }
-        //Ожидание остановки всех потоков
-        calculateManThread1.join();
-        calculateManThread2.join();
-        calculateManThread3.join();
-        calculateManThread4.join();
-        calculateManThread5.join();
-        calculateManThread6.join();
-        calculateManThread7.join();
-        calculateManThread8.join();
+        new Thread(calculateManThread1).start();
+        new Thread(calculateManThread2).start();
+        new Thread(calculateManThread3).start();
+        new Thread(calculateManThread4).start();
+        new Thread(calculateManThread5).start();
+        new Thread(calculateManThread6).start();
+        new Thread(calculateManThread7).start();
+        new Thread(calculateManThread8).start();
 
-        if(N2 % 8 != 0) {
-            calculateManThread9.join();
-        }
+        calculateManThread1.setOnSucceeded(e -> {
+            if(StopFlag==8){
+                setResult();
+            }
+        });
+        calculateManThread2.setOnSucceeded(e -> {
+            if(StopFlag==8){
+                setResult();
+            }
+        });
+        calculateManThread3.setOnSucceeded(e -> {
+            if(StopFlag==8){
+                setResult();
+            }
+        });
+        calculateManThread4.setOnSucceeded(e -> {
+            if(StopFlag==8){
+                setResult();
+            }
+        });
+        calculateManThread5.setOnSucceeded(e -> {
+            if(StopFlag==8){
+                setResult();
+            }
+        });
+        calculateManThread6.setOnSucceeded(e -> {
+            if(StopFlag==8){
+                setResult();
+            }
+        });
+        calculateManThread7.setOnSucceeded(e -> {
+            if(StopFlag==8){
+                setResult();
+            }
+        });
+        calculateManThread8.setOnSucceeded(e -> {
+            if(StopFlag==8){
+                setResult();
+            }
+        });
 
+    }
+    private void setResult(){
         resultStringTest = list.toArray(new String[list.size()]);
         //Удаление одниковых строк для вывода
         Set<String> set = new HashSet<String>(Arrays.asList(resultStringTest));
-        ResultString= String.valueOf(set);
+        ResultString = String.valueOf(set);
 
         finish = System.currentTimeMillis();
         timeConsumedMillis = finish - start;
 
-        if (ResultString.equals("")||ResultString.equals(null)||ResultString.equals("[]")) {
+        if (ResultString.equals("") || ResultString.equals(null) || ResultString.equals("[]")) {
             ResultString = "Небыло такого";
             ResultField.setText(ResultString);
         }
         TimeField.setText(Long.toString(timeConsumedMillis) + " Милисекунд");
         ResultField.setText(ResultString);
         //System.out.println("finish");
-        }
+    }
 
     private void setFocus(){
         Platform.runLater(new Runnable() {
