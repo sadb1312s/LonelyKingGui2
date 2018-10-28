@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="770.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+   <children>
+      <AnchorPane prefHeight="70.0" prefWidth="1000.0" style="-fx-background-color: #7294BB;">
+         <children>
+            <Text layoutX="14.0" layoutY="21.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1)Выберите способ ввода">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Text>
+            <Text layoutX="972.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="X" wrappingWidth="22.13671875">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Text>
+            <Button fx:id="Rand" layoutX="14.0" layoutY="36.0" mnemonicParsing="false" text="Рандом" />
+            <Button fx:id="FileButton" layoutX="210.0" layoutY="36.0" mnemonicParsing="false" text="Из файла" />
+            <Button fx:id="Keybord" layoutX="81.0" layoutY="36.0" mnemonicParsing="false" text="Ввод с клавиатуры" />
+            <AnchorPane fx:id="RandArea" layoutX="356.0" layoutY="1.0" prefHeight="68.0" prefWidth="605.0" style="-fx-background-color: green; visibility: no;">
+               <children>
+                  <TextField fx:id="countStep" layoutX="44.0" layoutY="39.0" />
+                  <Button fx:id="InButton" layoutX="233.0" layoutY="39.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="66.0" text="Ввести" />
+                  <Text layoutX="31.0" layoutY="21.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2)введите известное количество шагов">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="KeyArea" layoutX="356.0" layoutY="1.0" prefHeight="68.0" prefWidth="605.0" style="-fx-background-color: green; visibility: no;">
+               <children>
+                  <TextField fx:id="KeyIn" layoutX="44.0" layoutY="39.0" />
+                  <Text layoutX="31.0" layoutY="21.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2)Вводите шаги с клавиатуру(стрелки)">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+                  <Button fx:id="START" layoutX="201.0" layoutY="39.0" mnemonicParsing="false" text="START" />
+                  <Text layoutX="255.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3)После ввода всех шагов нажмите кноку старт" wrappingWidth="335.13671875">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Text>
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="FileArea1" layoutX="356.0" layoutY="1.0" prefHeight="68.0" prefWidth="605.0" style="-fx-background-color: green; visibility: no;">
+               <children>
+                  <Text layoutX="31.0" layoutY="21.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2)Файл находится в директории C:\InKingWayFile/InKingWayFile.txt">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+      <StackPane fx:id="KingWay" layoutX="300.0" layoutY="70.0" prefHeight="700.0" prefWidth="700.0">
+         <children>
+            <Text fx:id="BigText" strokeType="OUTSIDE" strokeWidth="0.0" style="visibility: no;" text="Слишком большое число, не отрисовывается" textAlignment="CENTER" wrappingWidth="479.08740234375">
+               <font>
+                  <Font size="48.0" />
+               </font>
+            </Text>
+         </children></StackPane>
+      <AnchorPane layoutY="70.0" prefHeight="700.0" prefWidth="300.0" style="-fx-background-color: #A5C6E9;">
+         <children>
+            <Text layoutX="63.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Шаги короля" textAlignment="CENTER" wrappingWidth="173.13671875">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Text>
+            <TextArea fx:id="StepWay" editable="false" layoutX="8.0" layoutY="38.0" prefHeight="222.0" prefWidth="287.0" promptText="Шаги короля" scrollTop="1.0" />
+            <Button fx:id="ResultButton" layoutX="8.0" layoutY="298.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="287.0" text="Расчитать в 8 потоков" />
+            <TextArea fx:id="ResultField" editable="false" layoutX="6.0" layoutY="330.0" prefHeight="331.0" prefWidth="287.0" scrollTop="1.0">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </TextArea>
+            <TextField fx:id="TimeField" editable="false" layoutX="6.0" layoutY="661.0" prefHeight="25.0" prefWidth="261.0" promptText="Время вычисления" />
+            <Text layoutX="277.0" layoutY="681.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Y" wrappingWidth="22.13671875">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Text>
+            <Button fx:id="OnePotok" layoutX="8.0" layoutY="267.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="287.0" text="Расчитать в один поток" />
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

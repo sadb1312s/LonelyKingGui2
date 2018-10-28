@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Lonely King Gui 2 V1.3:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Lonely_King_Gui_2_V1_3_jar</output-path>
+    <root id="archive" name="Lonely King Gui 2.jar">
+      <element id="module-output" name="Lonely King Gui 2" />
+    </root>
+  </artifact>
+</component>
